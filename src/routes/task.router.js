@@ -4,7 +4,7 @@ import TaskManager from "../manager/task.manager.js";
 const taskRouter = Router();
 const taskManager = new TaskManager();
 
-taskRouter.get("/", async (req, res) => {
+taskRouter.get("/",async (req, res) => {
     try {
         const {id} = req.query;
         if(id){
@@ -26,7 +26,7 @@ taskRouter.get("/", async (req, res) => {
 
 });
 
-taskRouter.post("/", async (req, res) => {
+taskRouter.post("/",async (req, res) => {
     const newTask = req.body;
     const createTask = await taskManager.addTask(newTask);
 
