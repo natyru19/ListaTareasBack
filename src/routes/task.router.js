@@ -20,8 +20,7 @@ taskRouter.get("/",async (req, res) => {
         }
         return res.status(404).json({data: []});
     } catch (error) {
-        return res.status(500).json({error: error.message})
-        
+        return res.status(500).json({error: error.message})        
     }
 
 });
