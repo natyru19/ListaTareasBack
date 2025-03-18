@@ -7,6 +7,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import registerRouter from "./routes/register.router.js";
 import loginRouter from "./routes/login.router.js";
+import morgan from "morgan";
 
 const app = express();
 const PUERTO = 8080;
@@ -18,6 +19,7 @@ app.use(cors({origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https:
 app.use(cookieParser());
 app.use(passport.initialize());
 initializePassport();
+app.use(morgan('tiny'));
 
 app.use("/api/tasks", taskRouter);
 app.use("/api/register", registerRouter);

@@ -2,7 +2,8 @@
 
 > *Proyecto propio*
 
-Instalo CORS para que funcione la comunicación entre el front y el back.
+- Se realiza el registro de usuarios.
+- Instalo CORS para que funcione la comunicación entre el front y el back.
 
 Agrego readme.
 
