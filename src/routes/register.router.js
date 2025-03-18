@@ -4,7 +4,7 @@ import UserManager from "../manager/user.manager.js";
 const registerRouter = Router();
 const userManager = new UserManager();
 
-registerRouter.post("/register", async (req, res) => {
+registerRouter.post("/", async (req, res) => {
     const { firstName, lastName, email, password, role } = req.body;
     
     try {
