@@ -18,9 +18,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tasks: {
-        type: [String]
-    },
     role: {
         type: String,
         enum: ["admin", "user"],

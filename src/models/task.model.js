@@ -8,6 +8,10 @@ const taskSchema = new mongoose.Schema({
     done: {
         type: Boolean,
         default: false
+    },
+    idUsuario : {
+        type : Number,
+        required : true
     }
 });
 

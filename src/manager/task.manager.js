@@ -12,6 +12,12 @@ class TaskManager {
         return task;
     }
 
+    //Busca tareas por descripción para un usuario
+    async getUsersTasksByDescription(desc, idUsuario){
+        const task = await taskModel.find({description : desc, idUsuario });
+        return task
+    }
+
     async addTask(newTask) {
         try {
             const task = await taskModel.create(newTask);

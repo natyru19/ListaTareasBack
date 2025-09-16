@@ -28,16 +28,21 @@ taskRouter.get("/", async (req, res) => {
 
 taskRouter.post("/", async (req, res) => {
     try {
-        const newTask = req.body;        
+        const newTaskData = req.body;        
 
-        if(!newTask.description || newTask.description=="" || typeof(newTask.description)!= "string"){
-            return res.status(400).json({message: "Falta agregar la descripción"});
+        if(!newTaskData.description || newTaskData.description=="" || typeof(newTaskData.description)!= "string" || !newTaskData.idUsuario || typeof(newTaskData.idUsuario)!= "number" ){
+            return res.status(400).json({message: "BAD REQUEST"});
+        }        
+        const taskFound = await taskManager.getUsersTasksByDescription(newTaskData.description, newTaskData.idUsuario);
+                
+        if(taskFound.length>0){
+            return res.status(400).json({message: "TAREA REPETIDA"});
         }
-
-        const createTask = await taskManager.addTask(newTask);
-
-        if(createTask){
-            return res.status(201).json({message: "Tarea agregada", data: createTask});
+        
+        const newTask = await taskManager.addTask(newTaskData);
+        
+        if(newTask){
+            return res.status(201).json({message: "Tarea agregada", data: newTask});
         }
         return res.status(400).json({message: "Error al agregar la tarea", data: null});
     } catch (error) {
