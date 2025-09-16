@@ -28,7 +28,12 @@ taskRouter.get("/", async (req, res) => {
 
 taskRouter.post("/", async (req, res) => {
     try {
-        const newTask = req.body;
+        const newTask = req.body;        
+
+        if(!newTask.description || newTask.description=="" || typeof(newTask.description)!= "string"){
+            return res.status(400).json({message: "Falta agregar la descripción"});
+        }
+
         const createTask = await taskManager.addTask(newTask);
 
         if(createTask){
@@ -41,11 +46,12 @@ taskRouter.post("/", async (req, res) => {
 });
 
 taskRouter.delete("/", async (req, res) => {
-    const {id} = req.query;
+    const {id} = req.query;    
+
     const task = await taskManager.getTaskByID(id);
     if(task){
         let deleted = await taskManager.deleteById(id);
-        return res.status(200).json({data: deleted});
+        return res.status(200).json({message: "Se eliminó la tarea correctamente", data: deleted});
     }
     return res.status(404).json({message: "No se encontró la tarea"});
 })
