@@ -28,12 +28,12 @@ taskRouter.get("/", async (req, res) => {
 
 taskRouter.post("/", async (req, res) => {
     try {
-        const newTaskData = req.body;        
-
-        if(!newTaskData.description || newTaskData.description=="" || typeof(newTaskData.description)!= "string" || !newTaskData.idUsuario || typeof(newTaskData.idUsuario)!= "number" ){
+        const newTaskData = req.body;
+        
+        if(!newTaskData.description || newTaskData.description=="" || typeof(newTaskData.description)!= "string")
             return res.status(400).json({message: "BAD REQUEST"});
-        }        
-        const taskFound = await taskManager.getUsersTasksByDescription(newTaskData.description, newTaskData.idUsuario);
+                
+        const taskFound = await taskManager.getUsersTasksByDescription(newTaskData.description, newTaskData.userId);
                 
         if(taskFound.length>0){
             return res.status(400).json({message: "TAREA REPETIDA"});

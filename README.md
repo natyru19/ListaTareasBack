@@ -2,6 +2,8 @@
 
 > *Proyecto propio*
 
+
+- Agrego controles en el método PUT 
 - Se realiza el login.
 - Instalo MORGAN para registrar información sobre las solicitudes y respuestas HTTP.
 - Se realiza el registro de usuarios.

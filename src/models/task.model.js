@@ -9,9 +9,10 @@ const taskSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    idUsuario : {
-        type : Number,
-        required : true
+    userId: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users",
+        default : new mongoose.Types.ObjectId("67d97629a600e26adb50026b")
     }
 });
 

@@ -13,10 +13,10 @@ class UsersManager{
         }
     }
 
-    async createUser(firstName, lastName, email, password, tasks, role){        
+    async createUser(firstName, lastName, email, password, role){        
 
         try {
-            const newUser = await UsersModel.create({firstName, lastName, email, password: createHash(password), tasks: tasks.description, role});
+            const newUser = await UsersModel.create({firstName, lastName, email, password: createHash(password), role});
             return newUser;
         } catch (error) {
             throw error;
