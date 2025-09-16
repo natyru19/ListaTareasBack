@@ -7,11 +7,33 @@ const taskManager = new TaskManager();
 
 taskRouter.get("/", async (req, res) => {    
     try {
-        const {id} = req.query;
-        if(id){
+        const {id, userId, done} = req.query;
+        
+        if(id!=undefined){
             const task = await taskManager.getTaskByID(id);
-            if(task.length>0){
+            if(task!=undefined){
                 return res.status(200).json({data: task});
+            }
+            return res.status(404).json({data: []});
+        }
+        if(userId!=undefined){
+            if(done!=undefined){
+                const tasks = await taskManager.getTasksByUserAndCompletion(userId,done);
+                if(tasks.length>0){
+                    return res.status(200).json({data: tasks});
+                }
+            return res.status(404).json({data: []});
+            }
+            const tasks = await taskManager.getTasksByUserId(userId);
+            if(tasks.length>0){
+                return res.status(200).json({data: tasks});
+            }
+            return res.status(404).json({data: []});
+        }
+        if(done!=undefined){
+            const tasks = await taskManager.getTasksByCompletion(done);
+            if(tasks.length>0){
+                return res.status(200).json({data: tasks});
             }
             return res.status(404).json({data: []});
         }
@@ -69,7 +91,7 @@ taskRouter.put("/", async (req, res) => {
         }
 
         const updateData = req.body;
-        if(updateData.description == undefined || updateData.done == undefined){
+        if(updateData.description == undefined || updateData.done == undefined || updateData.priority == undefined){
             return res.status(400).json({message: "MISSING MANDATORY FIELDS"});
         }
 
@@ -78,7 +100,7 @@ taskRouter.put("/", async (req, res) => {
             return res.status(404).json({message: "No se encontró la tarea"});
         }
         
-        if(updateData.description == taskFromDb.description && updateData.done == taskFromDb.done){
+        if(updateData.description == taskFromDb.description && updateData.done == taskFromDb.done && updateData.priority == taskFromDb.priority){
             return res.status(404).json({message: "No hay cambios"});
         }
 

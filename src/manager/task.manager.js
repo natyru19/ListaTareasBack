@@ -7,6 +7,21 @@ class TaskManager {
         return tasks;
     }
 
+    async getTasksByCompletion(done){
+        const tasks = await taskModel.find({done})
+        return tasks
+    }
+    
+    async getTasksByUserId(userId){
+        const tasks = await taskModel.find({userId})
+        return tasks
+    }
+
+    async getTasksByUserAndCompletion(userId, done){
+        const tasks = await taskModel.find({userId, done})
+        return tasks
+    }
+
     async getTaskByID(id) {
         const task = await taskModel.findById(id);
         return task;
@@ -38,7 +53,7 @@ class TaskManager {
 
     async updateTask(id, updateData){
         try {
-            const task = await taskModel.findByIdAndUpdate(id, {description : updateData.description, done : updateData.done}, {new:true})
+            const task = await taskModel.findByIdAndUpdate(id, {description : updateData.description, done : updateData.done, priority : updateData.priority}, {new:true})
             return task
         } catch (error) {
             throw error;

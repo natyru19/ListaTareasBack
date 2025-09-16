@@ -13,6 +13,14 @@ const taskSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "users",
         default : new mongoose.Types.ObjectId("67d97629a600e26adb50026b")
+    },
+    priority: {
+        type: String,
+        enum:{
+            values: ['NORMAL', 'ALTA' ],
+            message: "Valores aceptados NORMAL - ALTA"
+        },
+        default : "NORMAL"
     }
 });
 
