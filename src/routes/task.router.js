@@ -4,7 +4,8 @@ import TaskManager from "../manager/task.manager.js";
 const taskRouter = Router();
 const taskManager = new TaskManager();
 
-taskRouter.get("/",async (req, res) => {
+
+taskRouter.get("/", async (req, res) => {    
     try {
         const {id} = req.query;
         if(id){
@@ -20,16 +21,16 @@ taskRouter.get("/",async (req, res) => {
         }
         return res.status(404).json({data: []});
     } catch (error) {
-        return res.status(500).json({error: error.message})        
+        return res.status(500).json({error: error.message});        
     }
 
 });
 
-taskRouter.post("/",async (req, res) => {
-    const newTask = req.body;
-    const createTask = await taskManager.addTask(newTask);
-
+taskRouter.post("/", async (req, res) => {
     try {
+        const newTask = req.body;
+        const createTask = await taskManager.addTask(newTask);
+
         if(createTask){
             return res.status(201).json({message: "Tarea agregada", data: createTask});
         }
@@ -39,25 +40,46 @@ taskRouter.post("/",async (req, res) => {
     }
 });
 
-taskRouter.delete("/", async(req,res)=>{
+taskRouter.delete("/", async (req, res) => {
     const {id} = req.query;
     const task = await taskManager.getTaskByID(id);
     if(task){
-        let borrado = await taskManager.deleteById(id);
-        return res.status(200).json({data:borrado})
+        let deleted = await taskManager.deleteById(id);
+        return res.status(200).json({data: deleted});
     }
-    return res.status(404).json({message: "no se encontró el task"})
+    return res.status(404).json({message: "No se encontró la tarea"});
 })
 
-taskRouter.put("/", async(req,res)=>{
-    const {id} = req.query;
-    const updatedData = req.body;
-    const task = await taskManager.getTaskByID(id);
-    if(task){
-        const updatedTask = await taskManager.updateTask(id, updatedData)
-        return res.status(201).json({data: updatedTask})
+taskRouter.put("/", async (req, res) => {
+    try {
+        const {id} = req.query;
+        if(id==undefined){
+            return res.status(400).json({message: "BAD REQUEST"});
+        }
+
+        const updateData = req.body;
+        if(updateData.description == undefined || updateData.done == undefined){
+            return res.status(400).json({message: "MISSING MANDATORY FIELDS"});
+        }
+
+        const taskFromDb = await taskManager.getTaskByID(id);
+        if(!taskFromDb){
+            return res.status(404).json({message: "No se encontró la tarea"});
+        }
+        
+        if(updateData.description == taskFromDb.description && updateData.done == taskFromDb.done){
+            return res.status(404).json({message: "No hay cambios"});
+        }
+
+        const updatedTask = await taskManager.updateTask(id, updateData);
+        if(!updatedTask){
+            return res.status(500).json({message: "ALGO MAL"});
+        }
+
+        return res.status(201).json({message: "SUCCESS",  data: updatedTask});
+    } catch (error) {
+        return res.status(500).json({message: error.message});
     }
-    return res.status(404).json({message: "no se encontró el task"})
 })
 
 

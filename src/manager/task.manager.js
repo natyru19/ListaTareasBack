@@ -24,7 +24,7 @@ class TaskManager {
     async deleteById(id){
         try {
             const task = await taskModel.findByIdAndDelete(id)
-            return task
+            return task;
         } catch (error) {
             throw error;
         }
